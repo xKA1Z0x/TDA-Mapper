@@ -11,7 +11,8 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
     }
     .container {
       position: relative;
@@ -49,12 +50,26 @@
     .cond-btn {
       padding: 10px 20px;
       margin: 0 5px;
-      border: none;
-      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      transition: all 0.2s ease;
+    }
+    .cond-btn:hover {
+      background-color: #f0f0f0;
     }
     .cond-btn.active {
       background-color: #007BFF;
       color: white;
+      border-color: #007BFF;
+    }
+    .slider::-webkit-slider-thumb {
+      background: #007BFF;
+      border: none;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
