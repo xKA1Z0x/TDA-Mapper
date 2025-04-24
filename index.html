@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Plotly Viewer</title>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .container {
+      position: relative;
+      width: 800px;
+      height: 800px;
+    }
+    .graph {
+      width: 600px;
+      height: 600px;
+      margin: auto;
+    }
+    .slider {
+        position: absolute;
+        width: 200px;
+        height: 30px;
+        transform: rotate(270deg);
+        transform-origin: left top;
+        z-index: 1;
+    }
+    #cubeSlider {
+        left: -70px;
+        top: 250px;
+    }
+    #percSlider {
+        right: -70px;
+        top: 250px;
+    }
+    .buttons {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 10;
+    }
+    .cond-btn {
+      padding: 10px 20px;
+      margin: 0 5px;
+      border: none;
+      cursor: pointer;
+    }
+    .cond-btn.active {
+      background-color: #007BFF;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="range" id="cubeSlider" class="slider" min="0" max="2" step="1">
+    <div id="cubeVal" style="position:absolute; left:-10px; top:90px; width:50px; text-align:center;"></div>
+    <input type="range" id="percSlider" class="slider" min="0" max="2" step="1">
+    <div id="percVal" style="position:absolute; right:-10px; top:90px; width:50px; text-align:center;"></div>
+    <div id="plot" class="graph"></div>
+    <div class="buttons">
+      <button class="cond-btn" data-cond="PD">Parkinson's</button>
+      <button class="cond-btn" data-cond="CVA">Stroke</button>
+      <button class="cond-btn active" data-cond="HC">Control</button>
+      <button class="cond-btn" data-cond="LL">Limb Difference</button>
+    </div>
+  </div>
+  <script>
+    const cubeVals = [8, 13, 18];
+    const percVals = [50, 59, 70];
+    let currentCond = "HC";
+
+    const cubeSlider = document.getElementById("cubeSlider");
+    const percSlider = document.getElementById("percSlider");
+
+    cubeSlider.value = 1;
+    percSlider.value = 1;
+
+    function getFilename() {
+        const cube = cubeVals[cubeSlider.value];
+        const perc = percVals[percSlider.value];
+        return `cube${cube}-perc${perc}-${currentCond}.json`;    
+    }
+
+    async function loadFigure() {
+        const file = getFilename();
+        const response = await fetch(file);
+        const fig = await response.json();
+        Plotly.newPlot("plot", fig.data, fig.layout || {});
+        document.getElementById("cubeVal").innerText = cubeVals[cubeSlider.value];
+        document.getElementById("percVal").innerText = percVals[percSlider.value];
+    }
+
+    cubeSlider.oninput = loadFigure;
+    percSlider.oninput = loadFigure;
+
+    document.querySelectorAll(".cond-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentCond = btn.dataset.cond;
+      document.querySelectorAll(".cond-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadFigure();
+        });
+    });
+    loadFigure();
+  </script>
+</body>
+</html>
