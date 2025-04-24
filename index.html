@@ -60,10 +60,18 @@
 </head>
 <body>
   <div class="container">
-    <input type="range" id="cubeSlider" class="slider" min="0" max="2" step="1">
-    <div id="cubeVal" style="position:absolute; left:-10px; top:90px; width:50px; text-align:center;"></div>
-    <input type="range" id="percSlider" class="slider" min="0" max="2" step="1">
-    <div id="percVal" style="position:absolute; right:-10px; top:90px; width:50px; text-align:center;"></div>
+    <div style="position:absolute; left:-70px; top:150px; text-align:center;">
+      <div style="transform:rotate(-90deg); margin-bottom:10px;">Number of Cubes</div>
+      <input type="range" id="cubeSlider" class="slider" min="0" max="2" step="1">
+      <div id="cubeVal" style="margin-top:10px;"></div>
+    </div>
+    
+    <div style="position:absolute; right:-70px; top:150px; text-align:center;">
+      <div style="transform:rotate(-90deg); margin-bottom:10px;">Percent Overlap</div>
+      <input type="range" id="percSlider" class="slider" min="0" max="2" step="1">
+      <div id="percVal" style="margin-top:10px;"></div>
+    </div>
+
     <div id="plot" class="graph"></div>
     <div class="buttons">
       <button class="cond-btn" data-cond="PD">Parkinson's</button>
